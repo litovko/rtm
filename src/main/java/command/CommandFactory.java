@@ -26,6 +26,9 @@ public class CommandFactory
 
         commands.put("list", new ListCommand(storage));
         commands.put("add",  new AddCommand(storage));
+        commands.put("show",  new ShowCommand(storage));
+        commands.put("delete",  new DelCommand(storage));
+        commands.put("edit",  new EditCommand(storage));
     }
 
     public Command createCommand(String commandName)
