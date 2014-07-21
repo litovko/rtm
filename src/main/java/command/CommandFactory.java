@@ -1,42 +1,22 @@
 package command;
 
-import storage.InMemoryStorage;
-import storage.StorageService;
-
-import java.util.HashMap;
-import java.util.Map;
+/**
+ * User: rgordeev
+ * Date: 14.07.14
+ * Time: 17:26
+ */
 
 /**
- * (c) Roman Gordeev
- * <p/>
- * 2014 июл 09
+ * Интерфейс фабрики команд. Используется для внедрения зависимостей
+ * на осонове фабрик или при помощи Guice в контроллеры, реализующие выбор действий на
+ * основе анализа строки запроса, например {@link controller.SimpleController}
+ *
+ * {@link controller.RestController} использует другой механизм при работе с хранилищем и не нуждается
+ * в паттерне Команда {@link http://en.wikipedia.org/wiki/Command_pattern} и, как следсвие, в фабрике команд.
  */
-public class CommandFactory
+public interface CommandFactory
 {
-    private static final CommandFactory instance = new CommandFactory();
 
-    public static CommandFactory getInstance()
-    {
-        return instance;
-    }
+    Command createCommand(String commandName);
 
-    public CommandFactory()
-    {
-        storage = InMemoryStorage.getInstance();
-
-        commands.put("list", new ListCommand(storage));
-        commands.put("add",  new AddCommand(storage));
-        commands.put("show",  new ShowCommand(storage));
-        commands.put("delete",  new DelCommand(storage));
-        commands.put("edit",  new EditCommand(storage));
-    }
-
-    public Command createCommand(String commandName)
-    {
-        return commands.get(commandName);
-    }
-
-
-    private Map<String, Command> commands = new HashMap<String, Command>();
-    private StorageService storage;
 }

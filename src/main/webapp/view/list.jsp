@@ -30,12 +30,17 @@
             <tr>
                 <td><%= record.getId() %>  </td>
                 <td><%= record.getNote() %></td>
+<<<<<<< HEAD
                 <td>
                     <A href="show.do?id=<%= record.getId() %>">Show </A>
                     <A href="delete.do?id=<%= record.getId() %>">Delete</A>
                     <A href="edit.do?id=<%= record.getId() %>">Edit</A>
                 </td>
                 <td></td>
+=======
+                <td><a href="update.do?id=<%= record.getId() %>">update</a></td>
+                <td><a href="delete.do?id=<%= record.getId() %>">remove</a></td>
+>>>>>>> 898e0f18531ca124c4fa1c3482f8d429c5ff9e5d
             </tr>
 <%
     }
