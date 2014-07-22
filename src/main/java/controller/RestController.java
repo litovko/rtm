@@ -24,8 +24,7 @@ import java.io.PrintWriter;
 
 //@WebServlet("/rest/*")
 @Singleton
-public class RestController extends HttpServlet
-{
+public class RestController extends HttpServlet {
     @Inject
     StorageService storage;
 
@@ -41,12 +40,9 @@ public class RestController extends HttpServlet
 
         PrintWriter out = resp.getWriter();
 
-        if (StringUtils.isEmpty(id))
-        {
+        if (id.equals("record")) {
             out.println(new Gson().toJson(storage.list()));
-        }
-        else
-        {
+        } else {
             Long ID = Long.parseLong(id);
             out.println(new Gson().toJson(storage.get(ID)));
         }
@@ -68,8 +64,53 @@ public class RestController extends HttpServlet
         resp.setCharacterEncoding("utf-8");
 
         PrintWriter out = resp.getWriter();
-        out.println(new Gson().toJson(record));
+        //out.println(new Gson().toJson(record));
+        out.println(new Gson().toJson(storage.list()));
         out.close();
 
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+
+        req.setCharacterEncoding("utf-8");
+
+        String id = StringUtils.substringAfterLast(req.getPathInfo(), "/");
+        Long ID = Long.parseLong(id);
+        storage.delete(storage.get(ID));
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("utf-8");
+
+        PrintWriter out = resp.getWriter();
+        out.println(new Gson().toJson(storage.list()));
+        out.println(new Gson().toJson(storage.list()));
+        out.close();
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        req.setCharacterEncoding("utf-8");
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("utf-8");
+
+      //  String id = StringUtils.substringAfterLast(req.getPathInfo(), "/");
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(req.getInputStream()));
+
+        String json = reader.readLine();
+
+        Record record = new Gson().fromJson(json, Record.class);
+        storage.update(record);
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("utf-8");
+
+        PrintWriter out = resp.getWriter();
+        out.println(new Gson().toJson(storage.list()));
+        out.close();
     }
 }
